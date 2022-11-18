@@ -66,10 +66,12 @@ async function login(login, password) {
 }
 
 
-async function inShop(customerEnter) {
+async function inShop(customerEnter, callback) {
     let customer;
     try{
         customer = await customerEnter(readline.question("Enter login: \n"), readline.question("Enter password: \n"));
+        console.clear();
+        callback(customer);
     } catch (err) {
         console.log(err);
     }
@@ -100,17 +102,19 @@ function showBasket(basket) {
         total += goods[goods.findIndex(item => item.id == good)].price * Number(basket[good]);
     }
     console.log("Total: " + total + "$")
+    return total;
 }
 
-function menu(basket) {
+function menu(basket, callback) {
     console.clear();
-    showBasket(basket);
+    let total = showBasket(basket);
     console.log("\nb: buy");
     console.log("c: clear");
     console.log("q: quite");
     let choice = readline.question("Youre choice: ");
     switch (choice) {
         case "b":
+            callback(total);
             console.log("Success! Goodbye!");
             return false;
         case "c":
@@ -135,16 +139,15 @@ async function session() {
         console.clear();
         switch (choice) {
             case "1":
-                customer_data = await inShop(registration);
+                customer_data = await inShop(registration, user => console.log("Success registration, " + user.login + "\n"));
                 break;
             case "2":
-                customer_data = await inShop(login);
+                customer_data = await inShop(login, user => console.log("Success login, " + user.login + "\n"));
                 break;
             default:
                 console.log("Wrong value!");
         }
     }
-    console.clear();
 
     while(1){
         try {
@@ -152,11 +155,11 @@ async function session() {
             assortment();
             choice = readline.question("Youre choice: ");
             if(choice == "s") {
-                if(!menu(basket))
+                if(!menu(basket, total => console.log("Youre check for " + total + "& has been sent on ur Email!")))
                     break;
             }
             else
-                basket = addGood(choice, readline.question("good amo \n"), basket);
+                basket = addGood(choice, readline.question("How many?: \n"), basket);
             console.clear();
         } catch (err) {
             console.log(err);
@@ -164,14 +167,4 @@ async function session() {
     }
 }
 
-// registration("third", "3333");
-// console.log(customers);
-// console.log(login("third", "3333"));
-
 session();
-// let g = {
-//     'm': 1,
-//     'n': 2
-// }
-// for(let good in g)
-//     console.log(good);

@@ -94,7 +94,11 @@ function sorto(arr1, arr2) {
 function getRez(arr1, arr2) {
     let rez = "";
     for (let i = 0; i < arr1.length; i++) {
+        if (arr2[i] == 0)
+            continue;
         if (arr2[i] < -1)
+            rez += arr2[i];
+        else if (Math.abs(arr2[i]) == 1 && arr1[i] == 0)
             rez += arr2[i];
         else if (arr2[i] > 1)
             rez += "+" + arr2[i];

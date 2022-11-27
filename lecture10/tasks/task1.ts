@@ -94,7 +94,11 @@ function sorto(arr1: Array<number>, arr2: Array<number>) {
 function getRez(arr1: Array<number>, arr2: Array<number>): string {
     let rez: string = "";
     for(let i = 0; i < arr1.length; i++) {
+        if(arr2[i] == 0)
+            continue;
         if(arr2[i] < -1)
+            rez += arr2[i];
+        else if(Math.abs(arr2[i]) == 1 && arr1[i] == 0)
             rez += arr2[i];
         else if(arr2[i] > 1)
             rez += "+" + arr2[i];
@@ -102,6 +106,7 @@ function getRez(arr1: Array<number>, arr2: Array<number>): string {
             rez += "-";
         else
             rez += "+";
+
         if (arr1[i] > 1)
             rez += "x^" + arr1[i];
         else if(arr1[i] > 0)
@@ -120,16 +125,13 @@ let second: string = readlineSync.question("Введите второй мног
 //-2x^5-x^2+13x^2+x+1
 firstPow = retPow(first);
 firstKof = retKof(first);
-
 secondPow = retPow(second);
 secondKof = retKof(second);
-
 if(checkKof(firstKof) && checkPow(firstPow) && checkKof(secondKof) && checkPow(secondPow)) {
     let rezPow = mutPow(firstPow, secondPow);
     let rezKof = mutKof(firstKof, secondKof);
     rec(rezPow, rezKof);
     sorto(rezPow, rezKof);
-
     let a: string = getRez(rezPow, rezKof);
     console.log(a);
 } else

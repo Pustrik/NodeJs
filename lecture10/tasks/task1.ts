@@ -98,8 +98,10 @@ function getRez(arr1: Array<number>, arr2: Array<number>): string {
             continue;
         if(arr2[i] < -1)
             rez += arr2[i];
-        else if(Math.abs(arr2[i]) == 1 && arr1[i] == 0)
+        else if(arr2[i] == -1 && arr1[i] == 0)
             rez += arr2[i];
+        else if(arr2[i] == 1 && arr1[i] == 0)
+            rez += "+" + arr2[i];
         else if(arr2[i] > 1)
             rez += "+" + arr2[i];
         else if(arr2[i] < 0)
